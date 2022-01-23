@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="data.mybatis.mapper.MyUsersMapper">
+	<resultMap type="com.jhta.spring22.security.CustomUserDetail" id="userDetail">
+		<id property="userid" column="userid"/>
+		<result property="password" column="password"/>
+		<result property="enabled" column="enabled"/>
+		<collection property="authList" ofType="com.jhta.spring22.vo.MyAuthoritiesVo">
+			<result property="userid" column="userid"/>
+			<result property="authority" column="authority"/>
+		</collection>
+	</resultMap>
+	<select id="getAuths" parameterType="String" resultMap="userDetail">
+		select * from myusers m, myauthorities a
+		where m.userid=a.userid and m.userid=#{userid}
+	</select>
+	<insert id="addUser" parameterType="com.jhta.spring22.vo.MyUsersVo">
+		insert into myusers values(#{userid},#{username},#{password},sysdate,'1')
+	</insert>
+	<insert id="addAuth" parameterType="com.jhta.spring22.vo.MyAuthoritiesVo">
+		insert into myauthorities values(#{userid},#{authority})
+	</insert>
+	
+</mapper> 
+
+
+
+
